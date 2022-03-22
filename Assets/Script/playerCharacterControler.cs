@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class playerCharacterControler : MonoBehaviour
+public class PlayerCharacterControler : MonoBehaviour
 {
     //RigidBody contain fonctin to apply physical movement
     public Rigidbody2D Rigidbody2D = null;
@@ -26,13 +26,18 @@ public class playerCharacterControler : MonoBehaviour
         //Jump
     public bool jumpInput = false;
     public float jumpForce = 800f;
-    /*[Range(-1f, 1f)]
-    public float verticalInput = 0f;*/
+
+    [Range(-1f, 1f)]
+    public float verticalInput = 0f;
 
     void Update() {
         //input for horizontal movement
         this.horizontalInput = Input.GetAxisRaw("Horizontal");
-        //this.verticalInput = Input.GetAxisRaw("Vertical");
+        this.verticalInput = Rigidbody2D.velocity.y;//Pour faire voler le personnage hihi
+        /*{
+            Vector3 targetVelocity = new Vector3( this.Rigidbody2D.velocity.x, this.verticalInput * 10f, 0f);
+            this.Rigidbody2D.velocity = Vector3.SmoothDamp(this.Rigidbody2D.velocity, targetVelocity, ref velocity, this.moveSpeedFactor);
+        }*/
         //Jump
         this.jumpInput = Input.GetKeyDown(KeyCode.Space);
         if (this.jumpInput && this.isGrounded) {
@@ -54,11 +59,7 @@ public class playerCharacterControler : MonoBehaviour
             // And then smoothing it out and applying it to the character
             this.Rigidbody2D.velocity = Vector3.SmoothDamp(this.Rigidbody2D.velocity, targetVelocity, ref velocity, this.moveSpeedFactor);
         }
-        //Pour faire voler le personnage hihi
-        /*{
-            Vector3 targetVelocity = new Vector3( this.Rigidbody2D.velocity.x, this.verticalInput * 10f, 0f);
-            this.Rigidbody2D.velocity = Vector3.SmoothDamp(this.Rigidbody2D.velocity, targetVelocity, ref velocity, this.moveSpeedFactor);
-        }*/
+        
 
         //HandleFilp
         this.HandleFlip();

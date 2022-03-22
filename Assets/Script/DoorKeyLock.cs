@@ -5,44 +5,51 @@ using UnityEngine;
 public class DoorKeyLock : MonoBehaviour
 {
     // Door
-    public Platform doorMovingPlatform = null;
+    public GameObject portail1 = null;
+    public GameObject portail2 = null;
+    public GameObject portail3 = null;
+    public PlayerCharacterInventory playerCharacterInventory =null;
 
     // Flag
     private bool opened = false;
 
     void Start()
     {
-        // Disable door to prevent it from moving
-        if (this.doorMovingPlatform != null)
-            this.doorMovingPlatform.enabled = false;
+        // Disable portail to prevent it from moving
+        this.portail1.SetActive(false);
+        this.portail2.SetActive(false);
+        this.portail3.SetActive(false);
     }
 
     // Trigger Enter
-    void OnTriggerEnter2D(Collider2D other)
+    void Update()
     {
         // Prevent potential issues
         if (this.opened == true)
             return;
 
         // Try to find a player with an inventory attached
-        PlayerCharacterInventory playerCharacterInventory = other.GetComponentInParent<PlayerCharacterInventory>();
         if (playerCharacterInventory != null)
         {
+            //print(playerCharacterInventory.keyCount);
             // If enough keys
-            if (playerCharacterInventory.keyCount > 0)
+            if (playerCharacterInventory.keyCount >= 5)
             {
-                // Remove a key from inventory
-                playerCharacterInventory.keyCount -= 1;
-
+                
                 // Enabling door will make it move
-                if (this.doorMovingPlatform != null)
-                    this.doorMovingPlatform.enabled = true;
+                this.portail1.SetActive(true);
 
                 // Unset flag
                 this.opened = false;
 
                 // Delete key from scene (and prevent further use)
-                GameObject.Destroy(this.gameObject);
+                //GameObject.Destroy(this.gameObject);
+            }
+            if (playerCharacterInventory.keyCount >= 10) {
+                    this.portail2.SetActive(true);
+            }
+            if (playerCharacterInventory.keyCount >= 15) {
+                    this.portail3.SetActive(true);
             }
         }
     }

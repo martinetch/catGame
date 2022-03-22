@@ -26,5 +26,6 @@ public class Key : MonoBehaviour
             // Delete key from scene (and prevent further use)
             GameObject.Destroy(this.gameObject);
         }
+        
     }
 }

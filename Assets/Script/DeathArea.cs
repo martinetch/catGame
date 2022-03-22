@@ -8,7 +8,7 @@ public class DeathArea : MonoBehaviour
     {
         Player player = collider.GetComponentInParent<Player>();
         if (player != null) {
-            player.Die();
+            player.Die(-1);
         }
     }
 

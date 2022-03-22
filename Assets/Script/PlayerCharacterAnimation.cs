@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerCharacterAnimation : MonoBehaviour
 {
 
-    public playerCharacterControler playerCharacterControler = null;
+    public PlayerCharacterControler playerCharacterControler = null;
 
     public float HorizontalInput
     {
@@ -14,6 +14,19 @@ public class PlayerCharacterAnimation : MonoBehaviour
             if (this.playerCharacterControler != null)
             {
                 return this.playerCharacterControler.horizontalInput;
+            }
+            return 0f;
+
+        }
+    }
+
+    public float VerticalInput
+    {
+        get 
+        {
+            if (this.playerCharacterControler != null)
+            {
+                return this.playerCharacterControler.verticalInput;
             }
             return 0f;
 
@@ -31,18 +44,15 @@ public class PlayerCharacterAnimation : MonoBehaviour
         }
     }
 
-    public float IsGrounded
+    public bool IsGrounded
     {
         get 
         {
             if (this.playerCharacterControler != null)
             {
-                this.playerCharacterControler.jumpInput = Input.GetKeyDown(KeyCode.Space);
-                if (this.playerCharacterControler.jumpInput) {
-                    return 1.0f;
-                }
+                return this.playerCharacterControler.isGrounded;
             }
-            return 0f;
+            return false;
 
         }
     }
@@ -56,8 +66,9 @@ public class PlayerCharacterAnimation : MonoBehaviour
         if (this.animator !=null)
         {
             this.animator.SetFloat("Horizontal", Mathf.Abs(this.HorizontalInput));
-            this.animator.SetFloat("IsGrounded", IsGrounded);
-            this.animator.SetFloat("Vertical", this.Rigidbody2D.velocity.y);
+            this.animator.SetBool("IsGrounded", this.IsGrounded);
+            this.animator.SetFloat("Vertical", this.VerticalInput);
+           //print(this.Rigidbody2D.velocity.y);
             //this.Animator.SetBool("IsCrouching", this.FoxCharacterController.crouch);
 
         }
